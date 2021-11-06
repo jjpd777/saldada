@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "/Users/juanjo/Desktop/SALDADA/plaid-demo"
+		}
+	],
+	"settings": {
+		"typescript.tsc.autoDetect": "off",
+		"typescript.tsdk": "/usr/local/lib/node_modules/typescript/lib"
+	}
+}
