@@ -1,4 +1,5 @@
-import React, { useEffect, useContext, useCallback } from "react";
+
+import React, { useState,  useEffect, useContext, useCallback } from "react";
 
 import Header from "./Components/Headers";
 import Products from "./Components/ProductTypes/Products";
@@ -6,8 +7,11 @@ import Items from "./Components/ProductTypes/Items";
 import Context from "./Context";
 import saldada from "./saldada-new.png";
 import styles from "./App.module.scss";
+require('dotenv').config();
 
 const App = () => {
+  console.log("ENV VAR", process.env.PLAID_SECRET)
+  const [catchE, setCatchE] = useState("- Not retrieved -")
   const { linkSuccess, isItemAccess, dispatch } = useContext(Context);
   const getInfo = useCallback(async () => {
     const response = await fetch("/api/info", { method: "POST" });
@@ -30,6 +34,23 @@ const App = () => {
     return { paymentInitiation };
   }, [dispatch]);
 
+  useEffect(()=>{
+    console.log("\nERROR FETCHING FROM BACKEND\n", catchE);
+    
+  const testAPI = async() =>{
+    const r = await fetch("https://saldada-deploy.herokuapp.com/t", {
+      method:"GET",
+      mode: "cors",
+      headers:{
+        'Content-type' : 'application/json'
+      }
+    }).catch(e=>{
+      console.log("CORS ERROR", e)
+    })
+  };
+  testAPI();
+  },[catchE])
+
   const generateToken = useCallback(
     async (paymentInitiation) => {
       const path = paymentInitiation
@@ -37,6 +58,7 @@ const App = () => {
         : "/api/create_link_token";
       const response = await fetch(path, {
         method: "POST",
+      
       });
       if (!response.ok) {
         dispatch({ type: "SET_STATE", state: { linkToken: null } });
@@ -45,8 +67,8 @@ const App = () => {
       const data = await response.json();
       console.log("- - - Link Token - - -", data);
       if (data) {
+        setCatchE(data);
         if (data.error != null) {
-          console.log("- - - Link Error - - -", data.error);
           dispatch({
             type: "SET_STATE",
             state: {
