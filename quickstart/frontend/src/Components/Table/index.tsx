@@ -19,18 +19,24 @@ const Table = (props: Props) => {
       {category.title}
     </th>
   ));
-
+  console.log("\n Table Data, type of: ", typeof(props.data),props.data);
+  props.data.map((item: DataItem | any, index)=>{console.log("Item number ",index, item)})
   const rows = props.data
     .map((item: DataItem | any, index) => (
       <tr key={index} className={styles.dataRows}>
         {props.categories.map((category: Categories, index) => (
           <td key={index} className={styles.dataField}>
-            {item[category.field]}
+            {item[category.field]+ " here"} 
+            {console.log("item[category.field]", item[category.field],"\n")}
+            {console.log("field ", category.field,"\n")}
+            {console.log("category ", category,"\n")}
           </td>
         ))}
       </tr>
     ))
     .slice(0, maxRows);
+
+
 
   return props.isIdentity ? (
     <Identity data={props.data} categories={props.categories} />

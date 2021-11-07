@@ -7,6 +7,7 @@ import Error from "../Error";
 import { DataItem, Categories, ErrorDataItem, Data } from "../../dataUtilities";
 
 import styles from "./index.module.scss";
+import { type } from "os";
 
 interface Props {
   endpoint: string;
@@ -34,6 +35,7 @@ const Endpoint = (props: Props) => {
       return;
     }
     setTransformedData(props.transformData(data)); // transform data into proper format for each individual product
+    
     if (data.pdf != null) {
       setPdf(data.pdf);
     }
@@ -41,7 +43,8 @@ const Endpoint = (props: Props) => {
     setIsLoading(false);
   };
   
-  console.log("Schema "+ props.name)
+  console.log("\n- - - ENDPOINT PROPS - - -", props);
+  console.log("\n Transformed data, type: ", typeof(transformedData), transformedData);
   return (
     <>
       <div className={styles.endpointContainer}>

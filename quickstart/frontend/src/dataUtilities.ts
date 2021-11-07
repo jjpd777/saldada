@@ -358,6 +358,7 @@ export const transformAuthData = (data: AuthGetResponse) => {
 export const transformTransactionsData = (
   data: TransactionsGetResponse
 ): Array<DataItem> => {
+  console.log("\n- - - Transactions Data JSON - - -\n", data.transactions)
   return data.transactions!.map((t) => {
     const item: DataItem = {
       name: t.name!,
