@@ -26,7 +26,7 @@ const Products = () => {
   const { products } = useContext(Context);
   return (
     <ProductTypesContainer productType="Products">
-      {products.includes("payment_initiation") && (
+      {/* {products.includes("payment_initiation") && (
         <Endpoint
           endpoint="payment"
           name="Payment"
@@ -35,7 +35,7 @@ const Products = () => {
           description="Retrieve information about your latest payment."
           transformData={transformPaymentData}
         />
-      )}
+      )} */}
       <Endpoint
         endpoint="auth"
         name="Auth"

@@ -7,61 +7,79 @@ import Items from "./Components/ProductTypes/Items";
 import Context from "./Context";
 import saldada from "./saldada-new.png";
 import styles from "./App.module.scss";
-require('dotenv').config();
+
 
 const App = () => {
+    const BACKEND_URL = process.env.BACKEND ? process.env.BACKEND : "http://localhost:8000";
+
   console.log("ENV VAR", process.env.PLAID_SECRET)
   const [catchE, setCatchE] = useState("- Not retrieved -")
   const { linkSuccess, isItemAccess, dispatch } = useContext(Context);
+
   const getInfo = useCallback(async () => {
-    const response = await fetch("/api/info", { method: "POST" });
+    const p = BACKEND_URL + "/api/info"
+    const response = await fetch(p,
+    { method: "POST",
+    headers:{
+      "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+      "Access-Control-Allow-Origin": "*",
+
+    } 
+  })
+
+  console.log("\n===> INFO ENDPOINT RESPONSE:\n", response)
     if (!response.ok) {
       dispatch({ type: "SET_STATE", state: { backend: false } });
       return { paymentInitiation: false };
     }
 
     const data = await response.json();
-    const paymentInitiation: boolean = data.products.includes(
-      "payment_initiation"
-    );
+    console.log("\nData retrieved\n", data);
+    const paymentInitiation: boolean = false;
     dispatch({
       type: "SET_STATE",
       state: {
         products: data.products,
       },
     });
-    console.log("- - - Payment Initiation - - -\n", paymentInitiation)
     return { paymentInitiation };
   }, [dispatch]);
 
+ 
+
   useEffect(()=>{
-    console.log("\nERROR FETCHING FROM BACKEND\n", catchE);
-    
+    console.log("\nCHECKING RESPONSE FROM SERVER\n", catchE);
+    const p = BACKEND_URL + "/t";
   const testAPI = async() =>{
-    const r = await fetch("https://saldada-deploy.herokuapp.com/t", {
+    const r = await fetch( p , {
       method:"GET",
       mode: "cors",
       headers:{
         'Content-type' : 'application/json'
       }
-    }).catch(e=>{
-      console.log("CORS ERROR", e)
-    })
+    });
+
+    const d = await r.json()
+    console.log("Succesfull test of API", d);
   };
   testAPI();
   },[catchE])
 
   const generateToken = useCallback(
     async (paymentInitiation) => {
-      const path = paymentInitiation
-        ? "/api/create_link_token_for_payment"
-        : "/api/create_link_token";
+      const path = BACKEND_URL + "/api/create_link_token";
+        console.log(path, "this is the path")
       const response = await fetch(path, {
         method: "POST",
-      
+        headers:{
+          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+          "Access-Control-Allow-Origin": "*",
+        } 
       });
+      console.log("\nGENERATE TOKEN RESPONSE:\n", response);
       if (!response.ok) {
         dispatch({ type: "SET_STATE", state: { linkToken: null } });
+        console.log("\nERROR TOKEN RESPONSE:\n", response)
         return;
       }
       const data = await response.json();
@@ -87,6 +105,7 @@ const App = () => {
 
   useEffect(() => {
     const init = async () => {
+
       const { paymentInitiation } = await getInfo(); // used to determine which path to take when generating token
       // do not generate a new token for OAuth redirect; instead
       // setLinkToken from localStorage

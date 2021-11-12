@@ -25,10 +25,22 @@ const Endpoint = (props: Props) => {
   const [error, setError] = useState<ErrorDataItem | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  const BACKEND_URL = process.env.BACKEND ? process.env.BACKEND : "http://localhost:8000";
+
+
   const getData = async () => {
     setIsLoading(true);
-    const response = await fetch(`/api/${props.endpoint}`, { method: "GET" });
+    const p = BACKEND_URL +"/api/" + props.endpoint;
+    const response = await fetch(p, 
+    { method: "GET",
+    headers:{
+      "Access-Control-Allow-Origin": "*",
+    } 
+   },
+    );
     const data = await response.json();
+    console.log("\nGET DATA RESPONSE:\n", data)
+
     if (data.error != null) {
       console.log("API FETCH ERROR", data.error)
       setError(data.error);

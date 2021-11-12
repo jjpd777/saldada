@@ -44,7 +44,7 @@ const Header = () => {
           </Note>
           <p>
           <i>STEP 1 {'=>'}  <b>LOGIN</b></i> <br></br>Click on the <i>Launch Plaid</i> button bellow, and
-          proceed to login with your preferred financial institution via  <b><a href="www.plaid.com">plaid.com</a></b>
+          proceed to login with your preferred financial institution via  <b><a href="https://www.plaidmir">plaid.com</a></b>
           </p>
           <p>
           <i>STEP 2 {'=>'}  <b>ALLOW VIEW TRANSACTIONS</b></i> <br></br>
@@ -72,7 +72,7 @@ const Header = () => {
           </p>
 
           <p>
-          iii. Your data <b>will not be shared</b> with any 3rd parties or other financial institutions. All sensible financial information is retrieved using <b><a href="www.plaid.com">plaid.com</a></b>, 
+          iii. Your data <b>will not be shared</b> with any 3rd parties or other financial institutions. All sensible financial information is retrieved using <b><a href="https://www.plaid.com">plaidist</a></b>, 
           and kept confidential.
           </p>
           {/* message if backend is not running and there is no link token */}

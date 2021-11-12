@@ -6,18 +6,23 @@ import Context from "../../Context";
 
 const Link = () => {
   const { linkToken, dispatch } = useContext(Context);
+  const BACKEND_URL = process.env.BACKEND ? process.env.BACKEND : "http://localhost:8000";
+
 
   const onSuccess = React.useCallback(
     (public_token: string) => {
       // send public_token to server
+      const p = BACKEND_URL + "/api/set_access_token";
       const setToken = async () => {
-        const response = await fetch("/api/set_access_token", {
+        const response = await fetch( p, {
           method: "POST",
           headers: {
             "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            "Access-Control-Allow-Origin": "*"
           },
           body: `public_token=${public_token}`,
         });
+        console.log("\nLINK RESPONSE:\n", response)
         if (!response.ok) {
           dispatch({
             type: "SET_STATE",

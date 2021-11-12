@@ -53,6 +53,7 @@ export const QuickstartProvider: React.FC<{ children: ReactNode }> = (
     state: QuickstartState,
     action: QuickstartAction
   ): QuickstartState => {
+    console.log("\ CONTEXT STATE \n",state);
     switch (action.type) {
       case "SET_STATE":
         return { ...state, ...action.state };
