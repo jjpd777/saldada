@@ -6,7 +6,7 @@ import Context from "../../Context";
 
 const Link = () => {
   const { linkToken, dispatch } = useContext(Context);
-  const BACKEND_URL = process.env.BACKEND ? process.env.BACKEND : "http://localhost:8000";
+  const BACKEND_URL = process.env.REACT_APP_BACKEND ? process.env.REACT_APP_BACKEND : "http://localhost:8000";
 
 
   const onSuccess = React.useCallback(

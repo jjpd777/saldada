@@ -10,9 +10,10 @@ import styles from "./App.module.scss";
 
 
 const App = () => {
-    const BACKEND_URL = process.env.BACKEND ? process.env.BACKEND : "http://localhost:8000";
+    const BACKEND_URL = process.env.REACT_APP_BACKEND || "http://localhost:8000";
 
-  console.log("ENV VAR", process.env.PLAID_SECRET)
+  //
+  console.log("BACKEND DISPLAYED", BACKEND_URL)
   const [catchE, setCatchE] = useState("- Not retrieved -")
   const { linkSuccess, isItemAccess, dispatch } = useContext(Context);
 
@@ -46,25 +47,6 @@ const App = () => {
   }, [dispatch]);
 
  
-
-  useEffect(()=>{
-    console.log("\nCHECKING RESPONSE FROM SERVER\n", catchE);
-    const p = BACKEND_URL + "/t";
-  const testAPI = async() =>{
-    const r = await fetch( p , {
-      method:"GET",
-      mode: "cors",
-      headers:{
-        'Content-type' : 'application/json'
-      }
-    });
-
-    const d = await r.json()
-    console.log("Succesfull test of API", d);
-  };
-  testAPI();
-  },[catchE])
-  //
 
   const generateToken = useCallback(
     async (paymentInitiation) => {
